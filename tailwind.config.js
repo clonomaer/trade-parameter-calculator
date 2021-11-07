@@ -14,7 +14,7 @@ const config = {
         extend: {},
         colors: {
             primary: '#00ffff',
-            'primary-dark': '#306778',
+            'primary-dark': '#244e5b',
             ...defaultConfig.theme.colors,
         },
     },
