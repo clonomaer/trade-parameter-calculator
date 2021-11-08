@@ -5,11 +5,15 @@ import { config } from 'configs'
 import { LoadingStatusCtx } from 'contexts/loading-status'
 import { useLazyRef } from 'hooks/lazy-ref'
 import { useObservable } from 'hooks/observable'
-import { useSubscribe } from 'hooks/subscribe'
 import type { NextPage } from 'next'
 import { PositionSubTypeObservable } from 'observables/position-sub-type'
 import React, { useContext, useEffect } from 'react'
-import { combineLatest, Subject } from 'rxjs'
+import { combineLatest, map, Subject } from 'rxjs'
+import { parseFixed, formatFixed } from '@ethersproject/bignumber'
+import { calculatePosition } from 'functions/calculate-position'
+import { PositionTypeObservable } from 'observables/position-type'
+import _ from 'lodash'
+import ResultsShowCase from 'components/ResultsShowCase'
 
 const Home: NextPage = () => {
     const loading = useContext(LoadingStatusCtx)
@@ -28,27 +32,38 @@ const Home: NextPage = () => {
         })),
     )
 
-    useSubscribe(
-        () =>
-            positionSubType
-                ? combineLatest({
+    const results = useObservable(() =>
+        positionSubType
+            ? combineLatest({
                   positionType: PositionTypeObservable,
-                      positionSubType: PositionSubTypeObservable,
-                      fields: combineLatest(
-                          fieldSubjects.current
-                              .find(val => val.id === positionSubType)!
-                              .fields.reduce(
-                                  (acc, curr) => ({
-                                      ...acc,
-                                      [curr.id]: curr.subject,
-                                  }),
-                                  {},
-                              ),
+                  positionSubType: PositionSubTypeObservable,
+                  fields: combineLatest(
+                      fieldSubjects.current
+                          .find(val => val.id === positionSubType)!
+                          .fields.reduce(
+                              (acc, curr) => ({
+                                  ...acc,
+                                  [curr.id]: curr.subject.pipe(
+                                      map(x => parseFixed(x, 18)),
+                                  ),
+                              }),
+                              {},
+                          ),
+                  ),
+              }).pipe(
+                  map(x => calculatePosition(x)),
+                  map(x =>
+                      _.reduce(
+                          x,
+                          (acc, curr, key) => ({
+                              ...acc,
+                              [key]: formatFixed(curr, 18),
+                          }),
+                          {},
                       ),
-                  })
-                : undefined,
-        x => console.log(x),
-        [positionSubType],
+                  ),
+              )
+            : null,
     )
 
     return (
@@ -75,7 +90,7 @@ const Home: NextPage = () => {
                     <NumberInput
                         key={`sub-position-${positionSubType}-field-${field.id}`}
                         label={field.name}
-                        className="w-80"
+                        className="w-96"
                         subject={
                             fieldSubjects.current
                                 .find(val => val.id === positionSubType)
@@ -85,6 +100,7 @@ const Home: NextPage = () => {
                     />
                 ))}
             </div>
+            <ResultsShowCase className="mx-auto mt-10" results={results} />
         </div>
     )
 }
