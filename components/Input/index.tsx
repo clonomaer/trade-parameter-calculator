@@ -47,7 +47,7 @@ export const Input = withFormatter<
                                 //@ts-ignore
                                 e.target.select()
                             }
-                            value={formattedValue}
+                            value={formattedValue ?? ''}
                             {...props}
                         />
                     </div>
