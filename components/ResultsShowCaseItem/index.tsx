@@ -19,7 +19,7 @@ export default function ResultsShowCaseItem({
     useEffect(() => {
         setTimeout(() => {
             setFlash(false)
-        }, 500)
+        }, 300)
     }, [flash])
     const spanRef = useRef<HTMLSpanElement>(null)
     const copy = useClipboardCopy(spanRef, () => setFlash(true))
