@@ -16,13 +16,13 @@ export function useObservable<T>(
         | null
         | Observable<T>
         | BehaviorSubject<T>
-        | LazyEval<BehaviorSubject<T> | Observable<T>>,
+        | LazyEval<BehaviorSubject<T> | Observable<T> | null>,
 ): undefined | T | null
 export function useObservable<T>(
     observable:
         | Observable<T>
         | BehaviorSubject<T>
-        | LazyEval<BehaviorSubject<T> | Observable<T>>
+        | LazyEval<BehaviorSubject<T> | Observable<T> | null>
         | null,
     initialValue: T,
 ): T | null
@@ -32,7 +32,7 @@ export function useObservable<T>(
         | Observable<T>
         | BehaviorSubject<T>
         | null
-        | LazyEval<BehaviorSubject<T> | Observable<T>>,
+        | LazyEval<BehaviorSubject<T> | Observable<T> | null>,
     initialValue: T | Sentinel = SENTINEL,
 ): T | null | undefined {
     const [state, setState] = useState<T | undefined | null>(() => {
@@ -43,7 +43,7 @@ export function useObservable<T>(
             return undefined
         }
         const _observable = unLazy(observable)
-        if ('getValue' in _observable) {
+        if (!_.isNil(_observable) && 'getValue' in _observable) {
             return _observable.getValue()
         }
         return undefined
