@@ -21,6 +21,7 @@ export default function MainLayout({
                 'children:max-h-full',
                 'bg-gray-900',
                 'text-gray-100',
+                'py-5',
             )}>
             {children}
         </div>
