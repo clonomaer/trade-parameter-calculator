@@ -32,7 +32,7 @@ const Home: NextPage = () => {
         () =>
             positionSubType
                 ? combineLatest({
-                      positionType: PositionSubTypeObservable,
+                  positionType: PositionTypeObservable,
                       positionSubType: PositionSubTypeObservable,
                       fields: combineLatest(
                           fieldSubjects.current

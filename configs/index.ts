@@ -1,28 +1,33 @@
-export type DisplayDictionaryItem = {
-    id: string
+export type DisplayDictionaryItem<T = string> = {
+    id: T
     name: string
 }
 
-const PositionSubTypes: (DisplayDictionaryItem & {
+export type PositionSubType = 'multi' | 'single'
+
+const PositionSubTypes: (DisplayDictionaryItem<PositionSubType> & {
     fields: DisplayDictionaryItem[]
 })[] = [
     {
         id: 'multi',
         name: 'Multi',
         fields: [
-            { id: 'id1', name: 'ID 1' },
-            { id: 'id2', name: 'some ID2' },
-            { id: 'id3', name: 'ID3' },
-            { id: 'id4', name: 'ID4' },
+            { id: 'entry', name: 'Entry USD' },
+            { id: 'size', name: 'Size USD' },
+            { id: 'margin', name: 'Margin' },
+            { id: 'risk', name: '% Risk' },
+            { id: 'fee', name: '% Fee' },
         ],
     },
     {
         id: 'single',
         name: 'Single',
         fields: [
-            { id: 'id1', name: 'ID1' },
-            { id: 'id2', name: 'ID2' },
-            { id: 'id3', name: 'ID3' },
+            { id: 'entry', name: 'Entry USD' },
+            { id: 'size', name: 'Size' },
+            { id: 'margin', name: 'Margin' },
+            { id: 'risk', name: '% Risk' },
+            { id: 'fee', name: '% Fee' },
         ],
     },
 ]
