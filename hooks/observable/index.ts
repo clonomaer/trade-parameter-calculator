@@ -1,15 +1,21 @@
 import { SENTINEL, Sentinel } from 'contexts/empty-sentinel'
 import _ from 'lodash'
-import { useEffect, useState } from 'react'
+import { DependencyList, useEffect, useState } from 'react'
 import { BehaviorSubject, Observable } from 'rxjs'
 import { LazyEval } from 'types'
 import { unLazy } from 'utils/un-lazy'
 
+type Options = {
+    dependencies?: DependencyList
+}
+
 export function useObservable<T>(
     observable: BehaviorSubject<T> | LazyEval<BehaviorSubject<T>>,
+    options?: Options,
 ): T | null
 export function useObservable<T>(
     observable: Observable<T> | LazyEval<Observable<T>>,
+    options?: Options,
 ): T | undefined | null
 export function useObservable<T>(
     observable:
@@ -17,6 +23,7 @@ export function useObservable<T>(
         | Observable<T>
         | BehaviorSubject<T>
         | LazyEval<BehaviorSubject<T> | Observable<T> | null>,
+    options?: Options,
 ): undefined | T | null
 export function useObservable<T>(
     observable:
@@ -24,7 +31,7 @@ export function useObservable<T>(
         | BehaviorSubject<T>
         | LazyEval<BehaviorSubject<T> | Observable<T> | null>
         | null,
-    initialValue: T,
+    options?: Options & { initialValue: T },
 ): T | null
 
 export function useObservable<T>(
@@ -33,7 +40,15 @@ export function useObservable<T>(
         | BehaviorSubject<T>
         | null
         | LazyEval<BehaviorSubject<T> | Observable<T> | null>,
-    initialValue: T | Sentinel = SENTINEL,
+    {
+        initialValue = SENTINEL,
+        dependencies = [],
+    }: Options & {
+        initialValue?: T | Sentinel
+    } = {
+        initialValue: SENTINEL,
+        dependencies: [],
+    },
 ): T | null | undefined {
     const [state, setState] = useState<T | undefined | null>(() => {
         if (initialValue !== SENTINEL) {
@@ -58,6 +73,6 @@ export function useObservable<T>(
             subscription?.unsubscribe()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [...(_.isFunction(observable) ? [] : [observable])])
+    }, [...(_.isFunction(observable) ? [] : [observable]), ...dependencies])
     return state
 }
