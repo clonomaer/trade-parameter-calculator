@@ -1,9 +1,4 @@
-import React, {
-    DetailedHTMLProps,
-    InputHTMLAttributes,
-    useEffect,
-    useState,
-} from 'react'
+import React, { DetailedHTMLProps, InputHTMLAttributes } from 'react'
 import cn from 'classnames'
 import { ClassName } from 'types'
 import { withValidation, WithValidationProps } from 'components/with-validation'

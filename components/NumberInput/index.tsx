@@ -1,6 +1,4 @@
 import React from 'react'
-import cn from 'classnames'
-import { ClassName } from 'types'
 import { Input } from 'components/Input'
 import { NumbersValidatorOperator } from 'operators/numbers-validator'
 import { CurrencyFormatterOperator } from 'operators/currency-formatter'
