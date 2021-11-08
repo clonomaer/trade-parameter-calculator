@@ -11,6 +11,7 @@
     "test": "yarn test-single './!(node_modules|.next|dist|build)/**/*.spec.{js,jsx,ts,tsx}'"
   },
   "dependencies": {
+    "@ethersproject/bignumber": "^5.5.0",
     "classnames": "^2.3.1",
     "lodash": "^4.17.21",
     "nanoid": "^3.1.29",
