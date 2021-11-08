@@ -32,38 +32,40 @@ const Home: NextPage = () => {
         })),
     )
 
-    const results = useObservable(() =>
-        positionSubType
-            ? combineLatest({
-                  positionType: PositionTypeObservable,
-                  positionSubType: PositionSubTypeObservable,
-                  fields: combineLatest(
-                      fieldSubjects.current
-                          .find(val => val.id === positionSubType)!
-                          .fields.reduce(
-                              (acc, curr) => ({
+    const results = useObservable(
+        () =>
+            positionSubType
+                ? combineLatest({
+                      positionType: PositionTypeObservable,
+                      positionSubType: PositionSubTypeObservable,
+                      fields: combineLatest(
+                          fieldSubjects.current
+                              .find(val => val.id === positionSubType)!
+                              .fields.reduce(
+                                  (acc, curr) => ({
+                                      ...acc,
+                                      [curr.id]: curr.subject.pipe(
+                                          map(x => parseFixed(x, 18)),
+                                      ),
+                                  }),
+                                  {},
+                              ),
+                      ),
+                  }).pipe(
+                      map(x => calculatePosition(x)),
+                      map(x =>
+                          _.reduce(
+                              x,
+                              (acc, curr, key) => ({
                                   ...acc,
-                                  [curr.id]: curr.subject.pipe(
-                                      map(x => parseFixed(x, 18)),
-                                  ),
+                                  [key]: formatFixed(curr, 18),
                               }),
                               {},
                           ),
-                  ),
-              }).pipe(
-                  map(x => calculatePosition(x)),
-                  map(x =>
-                      _.reduce(
-                          x,
-                          (acc, curr, key) => ({
-                              ...acc,
-                              [key]: formatFixed(curr, 18),
-                          }),
-                          {},
                       ),
-                  ),
-              )
-            : null,
+                  )
+                : null,
+        { dependencies: [positionSubType] },
     )
 
     return (
