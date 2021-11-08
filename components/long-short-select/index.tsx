@@ -14,7 +14,11 @@ export default function LongShortSelect({
 }: LongShortSelectProps): React.ReactElement | null {
     const positionType = useObservable(PositionTypeObservable)
     return (
-        <div className={cn('children:w-48', className)}>
+        <div
+            className={cn(
+                'children:w-48 flex justify-center flex-wrap',
+                className,
+            )}>
             <Button
                 activeClassName="border-green-500 bg-green-900"
                 inactiveClassName="border-gray-500"
