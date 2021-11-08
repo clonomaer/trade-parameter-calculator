@@ -30,7 +30,6 @@ export const Input = withFormatter<
                 const length = useObservable(() =>
                     subject.pipe(map(x => x.length)),
                 )
-                console.log(formattedValue)
                 return (
                     <div className={cn('flex m-2 items-center', className)}>
                         {label && (
