@@ -19,13 +19,19 @@ export default function ResultsShowCase({
                 'flex-col align-middle justify-center items-center',
                 className,
             )}>
-            {_.map(results, (val, key) => (
-                <ResultsShowCaseItem
-                    key={`result-case-${key}`}
-                    value={val}
-                    id={key}
-                />
-            ))}
+            <label className="mb-2 flex justify-center">Results</label>
+            <div
+                className={cn(
+                    'border border-primary-dark rounded-xl py-5 px-7',
+                )}>
+                {_.map(results, (val, key) => (
+                    <ResultsShowCaseItem
+                        key={`result-case-${key}`}
+                        value={val}
+                        id={key}
+                    />
+                ))}
+            </div>
         </div>
     )
 }

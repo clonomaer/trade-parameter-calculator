@@ -24,11 +24,14 @@ export default function ResultsShowCaseItem({
     const spanRef = useRef<HTMLSpanElement>(null)
     const copy = useClipboardCopy(spanRef, () => setFlash(true))
     return (
-        <div className={cn('flex w-80 items-center', className)}>
+        <div className={cn('flex w-full items-center', className)}>
             <div className="flex-grow">{id}:</div>
             <div>
                 <span ref={spanRef}>{value}</span>
-                <Button className="text-xs" active={flash} onClick={copy}>
+                <Button
+                    className="text-xs inline-flex ml-3 mr-0"
+                    active={flash}
+                    onClick={copy}>
                     copy
                 </Button>
             </div>
