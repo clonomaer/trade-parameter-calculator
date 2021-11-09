@@ -12,8 +12,8 @@ const PositionSubTypes: (DisplayDictionaryItem<PositionSubType> & {
         id: 'multi',
         name: 'Multi',
         fields: [
-            { id: 'entry', name: 'Entry USD' },
-            { id: 'size', name: 'Size USD' },
+            { id: 'entry', name: 'Entry USDT' },
+            { id: 'size', name: 'Size USDT' },
             { id: 'margin', name: 'Margin' },
             { id: 'risk', name: '% Risk' },
             { id: 'fee', name: '% Fee' },
@@ -23,7 +23,7 @@ const PositionSubTypes: (DisplayDictionaryItem<PositionSubType> & {
         id: 'single',
         name: 'Single',
         fields: [
-            { id: 'entry', name: 'Entry USD' },
+            { id: 'entry', name: 'Entry USDT' },
             { id: 'size', name: 'Size' },
             { id: 'margin', name: 'Margin' },
             { id: 'risk', name: '% Risk' },
