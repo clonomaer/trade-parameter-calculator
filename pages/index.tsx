@@ -7,13 +7,14 @@ import { useLazyRef } from 'hooks/lazy-ref'
 import { useObservable } from 'hooks/observable'
 import type { NextPage } from 'next'
 import { PositionSubTypeObservable } from 'observables/position-sub-type'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { combineLatest, map, Subject } from 'rxjs'
 import { parseFixed, formatFixed } from '@ethersproject/bignumber'
 import { calculatePosition } from 'functions/calculate-position'
 import { PositionTypeObservable } from 'observables/position-type'
 import _ from 'lodash'
 import ResultsShowCase from 'components/ResultsShowCase'
+import Fade from 'components/Fade'
 
 const Home: NextPage = () => {
     const loading = useContext(LoadingStatusCtx)
@@ -68,8 +69,12 @@ const Home: NextPage = () => {
         { dependencies: [positionSubType] },
     )
 
+    const [displayResults, setDisplayResults] = useState<
+        Record<string, string> | null | undefined
+    >()
+
     return (
-        <div className="flex flex-col h-[var(--h-screen)] w-screen py-3 children:flex children:justify-center">
+        <div className="flex flex-col h-[var(--h-screen)] w-screen py-8 children:flex children:justify-center overflow-y-scroll">
             <div>
                 <LongShortSelect />
             </div>
@@ -88,7 +93,7 @@ const Home: NextPage = () => {
             <div className="flex-col mx-auto align-middle justify-center items-center mt-10">
                 {config.PositionSubTypes.find(
                     val => val.id === positionSubType,
-                )?.fields.map(field => (
+                )?.fields.map((field, index) => (
                     <NumberInput
                         key={`sub-position-${positionSubType}-field-${field.id}`}
                         label={field.name}
@@ -99,10 +104,38 @@ const Home: NextPage = () => {
                                 ?.fields.find(val => val.id === field.id)
                                 ?.subject
                         }
+                        onKeyPress={e => {
+                            if (e.key === 'Enter') {
+                                setDisplayResults(results)
+                                const fields =
+                                    Array.from(
+                                        document.querySelectorAll('input'),
+                                    ) || []
+                                const position = fields.indexOf(
+                                    e.target as HTMLInputElement,
+                                )
+                                fields[position + 1]?.focus()
+                                if (index === fields.length - 1) {
+                                    ;(e.target as HTMLInputElement).blur()
+                                }
+                            }
+                        }}
                     />
                 ))}
+                <Button
+                    className="w-full mt-4"
+                    onClick={() => setDisplayResults(results)}>
+                    Run
+                </Button>
             </div>
-            <ResultsShowCase className="mx-auto mt-10" results={results} />
+            <Fade
+                visible={_.keys(displayResults).length > 0}
+                className="!overflow-visible">
+                <ResultsShowCase
+                    className="mx-auto mt-10 w-96"
+                    results={displayResults}
+                />
+            </Fade>
         </div>
     )
 }
