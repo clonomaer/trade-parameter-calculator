@@ -42,11 +42,6 @@ export const Input = withFormatter<
                                     ? 'border-red-600 focus:border-red-500'
                                     : 'border-gray-500 focus:border-gray-300',
                             )}
-                            onClick={e =>
-                                //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                //@ts-ignore
-                                e.target.select()
-                            }
                             value={formattedValue ?? ''}
                             {...props}
                         />
