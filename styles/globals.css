@@ -10,6 +10,7 @@
 html {
     --h-screen: calc(var(--vh, 1vh) * 100);
     min-height: -webkit-fill-available;
+    max-height: -webkit-fill-available;
     font-size: max(1em, min(1.7vmin, 1.2vw));
     @media screen and (max-width: 400px) and (orientation: portrait),
         (max-height: 400px) and (orientation: landscape) {
@@ -18,8 +19,10 @@ html {
     body {
         font-family: 'Menlo Regular';
         min-height: var(--h-screen);
+        max-height: var(--h-screen);
         #__next {
             min-height: var(--h-screen);
+            max-height: var(--h-screen);
         }
     }
 }
