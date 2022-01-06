@@ -21,7 +21,7 @@ export default function NumberInput({
             {...props}
             validationFactory={NumbersValidatorOperator()}
             formatterFactory={CurrencyFormatterOperator()}
-            type="number"
+            // type="number"
             className={cn(styles.input, className)}
             onWheel={e => {
                 onWheel?.(e)
