@@ -1,26 +1,30 @@
 import React from 'react'
-import { Input } from 'components/Input'
 import { NumbersValidatorOperator } from 'operators/numbers-validator'
-import { CurrencyFormatterOperatorFactory } from 'operators/currency-formatter'
+import {
+    CurrencyFormatterOperatorFactory,
+    CurrencyParsersOperator,
+} from 'operators/currency-formatter'
 import cn from 'classnames'
 import styles from './styles.module.css'
+import { InputV2 } from 'components/InputV2'
 
 export type NumberInputProps = Omit<
-    React.ComponentProps<typeof Input>,
+    React.ComponentProps<typeof InputV2>,
     'validationFactory' | 'formatterFactory'
 >
 
-export default function NumberInput({
+export default function NumberInputV2({
     className,
     onWheel,
     onFocus,
     ...props
 }: NumberInputProps): React.ReactElement | null {
     return (
-        <Input
+        <InputV2
             {...props}
-            validationFactory={NumbersValidatorOperator}
-            formatterFactory={CurrencyFormatterOperatorFactory()}
+            validator={NumbersValidatorOperator}
+            formatter={CurrencyFormatterOperatorFactory()}
+            parser={CurrencyParsersOperator}
             // type="number"
             className={cn(styles.input, className)}
             onWheel={e => {

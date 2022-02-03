@@ -5,6 +5,9 @@ import React, {
 } from 'react'
 import cn from 'classnames'
 import { ClassName } from 'types'
+import withButtonWrapper, {
+    WithButtonWrapperInnerComponentRequiredProps,
+} from 'components/ButtonWrapper'
 
 export type ButtonProps = PropsWithChildren<{
     className?: ClassName
@@ -15,16 +18,18 @@ export type ButtonProps = PropsWithChildren<{
     DetailedHTMLProps<
         ButtonHTMLAttributes<HTMLButtonElement>,
         HTMLButtonElement
-    >
+    > &
+    WithButtonWrapperInnerComponentRequiredProps
 
-export default function Button({
+const Button = withButtonWrapper<ButtonProps>(function InnerButton({
     className,
     children,
     active,
     activeClassName,
     inactiveClassName,
+    isLoading,
     ...props
-}: ButtonProps): React.ReactElement | null {
+}): React.ReactElement | null {
     return (
         <button
             className={cn(
@@ -40,4 +45,5 @@ export default function Button({
             {children}
         </button>
     )
-}
+})
+export default Button

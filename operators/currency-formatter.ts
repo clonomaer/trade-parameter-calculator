@@ -1,9 +1,11 @@
 import _ from 'lodash'
-import { map } from 'rxjs'
+import { map, OperatorFunction } from 'rxjs'
 import { FormatterOperator } from 'types'
-import { sanitizeNumbers } from 'utils/sanitize-numbers'
+import { onlyNumbers, sanitizeNumbers } from 'utils/sanitize-numbers'
 
-export const CurrencyFormatterOperator: FormatterOperator = () => {
+export const CurrencyFormatterOperatorFactory: FormatterOperator<[number?]> = (
+    precision?: number,
+) => {
     return input =>
         input.pipe(
             map(input => {
@@ -17,3 +19,6 @@ export const CurrencyFormatterOperator: FormatterOperator = () => {
             }),
         )
 }
+
+export const CurrencyParsersOperator: OperatorFunction<string, string> =
+    input => input.pipe(map(onlyNumbers))

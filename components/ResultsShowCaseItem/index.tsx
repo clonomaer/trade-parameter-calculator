@@ -29,10 +29,10 @@ export default function ResultsShowCaseItem({
             <div>
                 <span ref={spanRef}>{value}</span>
                 <Button
-                    className="text-xs inline-flex ml-3 mr-0"
+                    className="text-xs inline-flex ml-3 mr-0 text-3xl !px-3 !py-1"
                     active={flash}
                     onClick={copy}>
-                    copy
+                    ⎘
                 </Button>
             </div>
         </div>

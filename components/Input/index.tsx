@@ -1,4 +1,10 @@
-import React, { DetailedHTMLProps, InputHTMLAttributes } from 'react'
+import React, {
+    DetailedHTMLProps,
+    InputHTMLAttributes,
+    useDebugValue,
+    useEffect,
+    useState,
+} from 'react'
 import cn from 'classnames'
 import { ClassName } from 'types'
 import { withValidation, WithValidationProps } from 'components/with-validation'
@@ -6,6 +12,8 @@ import { withObservable } from 'components/with-observable'
 import { useObservable } from 'hooks/observable'
 import { map } from 'rxjs'
 import { withFormatter } from 'components/with-formatter'
+import { useGetIsFirstRender } from 'hooks/is-first-render'
+import _ from 'lodash'
 
 export type InputProps = {
     className?: ClassName
@@ -25,11 +33,15 @@ export const Input = withFormatter<
                 subject,
                 formattedValue,
                 ref,
+                value,
                 ...props
             }) {
                 const length = useObservable(() =>
                     subject.pipe(map(x => x.length)),
                 )
+                const subjectValue = useObservable(subject, {
+                    initialValue: 's',
+                })
                 return (
                     <div className={cn('flex m-2 items-center', className)}>
                         {label && (
@@ -42,7 +54,7 @@ export const Input = withFormatter<
                                     ? 'border-red-600 focus:border-red-500'
                                     : 'border-gray-500 focus:border-gray-300',
                             )}
-                            value={formattedValue ?? ''}
+                            value={formattedValue ?? subjectValue}
                             {...props}
                         />
                     </div>

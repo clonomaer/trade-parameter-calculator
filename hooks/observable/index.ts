@@ -22,14 +22,14 @@ export function useObservable<T>(
         | null
         | Observable<T>
         | BehaviorSubject<T>
-        | LazyEval<BehaviorSubject<T> | Observable<T> | null>,
+        | LazyEval<BehaviorSubject<T> | Observable<T> | null | undefined>,
     options?: Options,
 ): undefined | T | null
 export function useObservable<T>(
     observable:
         | Observable<T>
         | BehaviorSubject<T>
-        | LazyEval<BehaviorSubject<T> | Observable<T> | null>
+        | LazyEval<BehaviorSubject<T> | Observable<T> | null | undefined>
         | null,
     options?: Options & { initialValue: T },
 ): T | null
@@ -39,7 +39,7 @@ export function useObservable<T>(
         | Observable<T>
         | BehaviorSubject<T>
         | null
-        | LazyEval<BehaviorSubject<T> | Observable<T> | null>,
+        | LazyEval<BehaviorSubject<T> | Observable<T> | null | undefined>,
     {
         initialValue = SENTINEL,
         dependencies = [],
