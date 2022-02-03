@@ -27,7 +27,7 @@ export const Fields$ = localCache.observe<{
 )
 
 export const FieldSubjects: {
-    [x in PositionSubType]: { [x: string]: Subject<string> }
+    [x in PositionSubType]: { [x: string]: ReplaySubject<string> }
 } = config.PositionSubTypes.reduce(
     (acc, subType) => ({
         ...acc,

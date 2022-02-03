@@ -1,16 +1,8 @@
 import { PositionSubType, config } from 'configs'
 import TP from '../services/tp'
-import {
-    combineLatest,
-    from,
-    iif,
-    Observable,
-    ReplaySubject,
-    timer,
-} from 'rxjs'
+import { combineLatest, from, Observable, ReplaySubject, timer } from 'rxjs'
 import { ajax } from 'rxjs/ajax'
 import {
-    debounce,
     debounceTime,
     distinctUntilChanged,
     distinctUntilKeyChanged,
@@ -18,17 +10,8 @@ import {
     map,
     mergeMap,
     catchError,
-    mergeAll,
-    retry,
-    retryWhen,
-    delay,
-    take,
 } from 'rxjs/operators'
-import {
-    KCSAPIActiveContracts,
-    KCSAPIContractInfo,
-    KCSAPITickerInfo,
-} from 'types/kucoin'
+import { KCSAPIActiveContracts, KCSAPITickerInfo } from 'types/kucoin'
 import _ from 'lodash'
 
 const activeSymbols = ajax<KCSAPIActiveContracts>(

@@ -1,7 +1,7 @@
 import React, { ButtonHTMLAttributes, DetailedHTMLProps, useState } from 'react'
 
 export type ButtonWrapperProps = {
-    job: () => Promise<void>
+    job: () => void | Promise<void>
 }
 
 type HTMLButtonProps = DetailedHTMLProps<

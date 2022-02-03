@@ -31,7 +31,7 @@ export default function ResultsShowCaseItem({
                 <Button
                     className="text-xs inline-flex ml-3 mr-0 text-3xl !px-3 !py-1"
                     active={flash}
-                    onClick={copy}>
+                    job={copy}>
                     ⎘
                 </Button>
             </div>

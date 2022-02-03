@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { from, fromEvent, ReplaySubject } from 'rxjs'
+import { fromEvent, ReplaySubject } from 'rxjs'
 import { filter, mergeMap } from 'rxjs/operators'
 import {
     StorageAPI,

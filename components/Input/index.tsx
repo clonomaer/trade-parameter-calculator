@@ -1,10 +1,4 @@
-import React, {
-    DetailedHTMLProps,
-    InputHTMLAttributes,
-    useDebugValue,
-    useEffect,
-    useState,
-} from 'react'
+import React, { DetailedHTMLProps, InputHTMLAttributes, useState } from 'react'
 import cn from 'classnames'
 import { ClassName } from 'types'
 import { withValidation, WithValidationProps } from 'components/with-validation'
@@ -12,7 +6,6 @@ import { withObservable } from 'components/with-observable'
 import { useObservable } from 'hooks/observable'
 import { map } from 'rxjs'
 import { withFormatter } from 'components/with-formatter'
-import { useGetIsFirstRender } from 'hooks/is-first-render'
 import _ from 'lodash'
 
 export type InputProps = {
