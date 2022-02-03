@@ -1,11 +1,7 @@
 import _ from 'lodash'
 import { fromEvent, ReplaySubject } from 'rxjs'
 import { filter, mergeMap } from 'rxjs/operators'
-import {
-    StorageAPI,
-    StorageAPIWriteOptions,
-    WindowLocalStorageEvent,
-} from 'types'
+import { StorageAPI, WindowLocalStorageEvent } from 'types'
 import { MemoryCache } from './memory-cache'
 import { config } from '../configs'
 import { Window$ } from 'observables/window'

@@ -1,7 +1,7 @@
 import { config, PositionSubType } from 'configs'
 import { localCache } from 'contexts/local-cache'
 import _ from 'lodash'
-import { ReplaySubject, Subject } from 'rxjs'
+import { ReplaySubject } from 'rxjs'
 import { distinctUntilChanged, filter, map } from 'rxjs/operators'
 import { getSubjectValue } from 'utils/get-subject-value'
 
