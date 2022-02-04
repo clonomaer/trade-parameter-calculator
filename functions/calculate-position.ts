@@ -89,7 +89,11 @@ export function calculatePosition(props: {
 
     const tps = combineLatest({ entryPrice, rawTpPrices, stopLossPrice }).pipe(
         map(({ entryPrice, rawTpPrices, stopLossPrice }) =>
-            entryPrice < stopLossPrice ? rawTpPrices?.reverse() : rawTpPrices,
+            rawTpPrices
+                ? entryPrice < stopLossPrice
+                    ? [...rawTpPrices].reverse()
+                    : rawTpPrices
+                : undefined,
         ),
         map(prices =>
             prices?.map(
