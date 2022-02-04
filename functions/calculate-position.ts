@@ -1,6 +1,6 @@
 import { PositionSubType, config } from 'configs'
 import TP from '../services/tp'
-import { combineLatest, from, Observable, ReplaySubject, timer } from 'rxjs'
+import { combineLatest, from, Observable, timer } from 'rxjs'
 import { ajax } from 'rxjs/ajax'
 import {
     debounceTime,
@@ -10,6 +10,7 @@ import {
     map,
     mergeMap,
     catchError,
+    switchMap,
 } from 'rxjs/operators'
 import { KCSAPIActiveContracts, KCSAPITickerInfo } from 'types/kucoin'
 import _ from 'lodash'
@@ -54,20 +55,19 @@ export function calculatePosition(props: {
         distinctUntilChanged(),
     )
 
-    const entryPrice = new ReplaySubject<number>(1)
-    props.fields
-        .pipe(
-            map(({ entry, symbol }) => ({ entry: Number(entry), symbol })),
-            filter(({ symbol }) => !_.isEmpty(symbol)),
-            distinctUntilChanged(_.isEqual),
-            debounceTime(500),
-            mergeMap(({ entry, symbol }) =>
-                entry === 0 || _.isNaN(entry)
-                    ? marketPriceOf(symbol)
-                    : from([entry]),
-            ),
-        )
-        .subscribe(entryPrice)
+    // const entryPrice = new ReplaySubject<number>(1)
+    const entryPrice = props.fields.pipe(
+        map(({ entry, symbol }) => ({ entry: Number(entry), symbol })),
+        filter(({ symbol }) => !_.isEmpty(symbol)),
+        distinctUntilChanged(_.isEqual),
+        debounceTime(500),
+        switchMap(({ entry, symbol }) =>
+            entry === 0 || _.isNaN(entry)
+                ? marketPriceOf(symbol)
+                : from([entry]),
+        ),
+    )
+    // .subscribe(entryPrice)
 
     const lotSize = props.fields.pipe(
         map(({ symbol }) => symbol),
