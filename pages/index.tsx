@@ -4,7 +4,7 @@ import { LoadingStatusCtx } from 'contexts/loading-status'
 import { useObservable } from 'hooks/observable'
 import type { NextPage } from 'next'
 import { PositionSubType$ } from 'observables/position-sub-type'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { calculatePosition } from 'functions/calculate-position'
 import _ from 'lodash'
 import ResultsShowCase from 'components/ResultsShowCase'
@@ -83,20 +83,18 @@ const Home: NextPage = () => {
                 </div>
             )}
             <div className="flex flex-col h-[var(--h-screen)] flex-grow-0 px-5 children:flex children:justify-center">
-                {/* <div>
+                <div>
                     {config.PositionSubTypes.map(subType => (
                         <Button
                             key={subType.id}
-                            job={async () =>
-                                PositionSubTypeObservable.next(subType.id)
-                            }
+                            job={() => PositionSubType$.next(subType.id)}
                             active={positionSubType === subType.id}>
                             {subType.name}
                         </Button>
                     ))}
-                </div> */}
+                </div>
                 <Button
-                    active={showChart}
+                    active={!!showChart}
                     job={async () => showChart$.next(!showChart)}>
                     show chart
                 </Button>
