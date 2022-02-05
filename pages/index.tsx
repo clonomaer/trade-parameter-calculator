@@ -19,7 +19,10 @@ const MemoizedChart = React.memo<{ symbol: string | null | undefined }>(
     ({ symbol }) => (
         <AdvancedRealTimeChart
             theme="dark"
-            symbol={symbol ?? 'KUCOIN:BTCUSDT'}
+            symbol={
+                (symbol === 'KUCOIN:XBTUSDT' ? undefined : symbol) ??
+                'KUCOIN:BTCUSDT'
+            }
             autosize={true}
             interval="5"
         />
