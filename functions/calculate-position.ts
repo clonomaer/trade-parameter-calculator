@@ -14,6 +14,7 @@ import {
 } from 'rxjs/operators'
 import { KCSAPIActiveContracts, KCSAPITickerInfo } from 'types/kucoin'
 import _ from 'lodash'
+import { noZero } from 'utils/no-zero'
 
 const activeSymbols = ajax<KCSAPIActiveContracts>(
     `${config.PositionSettings.baseURL}/contracts/active`,
@@ -87,18 +88,23 @@ export function calculatePosition(props: {
         ),
     )
 
-    const tps = combineLatest({ entryPrice, rawTpPrices, stopLossPrice }).pipe(
-        map(({ entryPrice, rawTpPrices, stopLossPrice }) =>
-            rawTpPrices
+    const tps = combineLatest({
+        entryPrice,
+        rawTpPrices,
+        stopLossPrice,
+        fields: props.fields,
+    }).pipe(
+        map(({ entryPrice, rawTpPrices, stopLossPrice, fields }) => ({
+            prices: rawTpPrices
                 ? entryPrice < stopLossPrice
                     ? [...rawTpPrices].reverse()
                     : rawTpPrices
                 : undefined,
-        ),
-        map(prices =>
+            weights: fields.tpWeights,
+        })),
+        map(({ prices, weights }) =>
             prices?.map(
-                (price, index) =>
-                    new TP(price, config.PositionSettings.tpWeight[index]),
+                (price, index) => new TP(price, weights?.split(',')[index]),
             ),
         ),
     )
@@ -107,11 +113,11 @@ export function calculatePosition(props: {
         entryPrice,
         lotSize,
         stopLossPrice,
+        fields: props.fields,
     }).pipe(
-        map(({ entryPrice, lotSize, stopLossPrice }) =>
+        map(({ entryPrice, lotSize, stopLossPrice, fields }) =>
             Math.floor(
-                (config.PositionSettings.accountSize *
-                    config.PositionSettings.risk) /
+                (noZero(fields.account, 100) * (noZero(fields.risk, 1) / 100)) /
                     Math.abs(entryPrice - stopLossPrice) /
                     lotSize,
             ),
@@ -124,6 +130,7 @@ export function calculatePosition(props: {
         entryPrice,
         tps,
         stopLossPrice,
+        fields: props.fields,
     }).pipe(
         map(
             ({
@@ -132,6 +139,7 @@ export function calculatePosition(props: {
                 entryPrice,
                 tps,
                 stopLossPrice,
+                fields,
             }) => {
                 const res: Record<string, string | Record<string, string>> = {}
                 res['amount'] = String(entryBaseLotVolume)
@@ -141,7 +149,7 @@ export function calculatePosition(props: {
                 )
                 res['value'] = `$${entryQuoteVolume}`
                 res['margin'] = `$${Math.round(
-                    entryQuoteVolume / config.PositionSettings.leverage,
+                    entryQuoteVolume / noZero(fields.leverage, 1),
                 )}`
 
                 res['risk'] = `$${Math.abs(

@@ -26,7 +26,7 @@ class TP {
     price
     constructor(price, weight) {
         this.price = price
-        this.weight = weight ?? 1
+        this.weight = Number(weight ?? 1)
     }
     index() {
         return TP.sourceArray.findIndex(x => x.price === this.price)

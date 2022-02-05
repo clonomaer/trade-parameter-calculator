@@ -17,15 +17,15 @@ const PositionSubTypes: (DisplayDictionaryItem<PositionSubType> & {
             { id: 'stop', name: 'stop', type: 'number' },
             { id: 'entry', name: 'entry', type: 'number' },
             { id: 'tps', name: 'tps', type: 'string' },
+            { id: 'account', name: 'account size', type: 'number' },
+            { id: 'risk', name: 'risk percent', type: 'number' },
+            { id: 'leverage', name: 'leverage', type: 'number' },
+            { id: 'tpWeights', name: 'tp weights', type: 'string' },
         ],
     },
 ]
 
 const PositionSettings = {
-    accountSize: 850,
-    risk: 0.0085,
-    leverage: 5,
-    tpWeight: [3, 3, 4],
     baseURL: 'https://evening-sands-29070.herokuapp.com/proxy/api/v1',
 }
 
