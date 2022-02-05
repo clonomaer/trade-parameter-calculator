@@ -14,6 +14,7 @@ import { AdvancedRealTimeChart } from 'react-ts-tradingview-widgets'
 import { Fields$, FieldSubjects } from 'observables/field-subjects'
 import NumberInputV2 from 'components/NumberInputV2'
 import { InputV2 } from 'components/InputV2'
+import { showChart$ } from 'contexts/show-chart'
 
 const MemoizedChart = React.memo<{ symbol: string | null | undefined }>(
     ({ symbol }) => (
@@ -70,13 +71,7 @@ const Home: NextPage = () => {
         { dependencies: [positionSubType] },
     )
 
-    const [showChart, setShowChart] = useState<boolean>(true)
-    useEffect(() => {
-        setShowChart(JSON.parse(localStorage.getItem('showChart') ?? 'true'))
-    }, [])
-    useEffect(() => {
-        localStorage.setItem('showChart', JSON.stringify(showChart))
-    }, [showChart])
+    const showChart = useObservable(showChart$)
 
     return (
         <div className="flex w-screen justify-center overflow-auto">
@@ -102,7 +97,7 @@ const Home: NextPage = () => {
                 </div> */}
                 <Button
                     active={showChart}
-                    job={async () => setShowChart(x => !x)}>
+                    job={async () => showChart$.next(!showChart)}>
                     show chart
                 </Button>
                 <div className="flex-col mx-auto align-middle justify-center items-center mt-5">
