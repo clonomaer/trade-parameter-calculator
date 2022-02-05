@@ -140,7 +140,7 @@ const Home: NextPage = () => {
                 </div>
                 <Fade
                     visible={_.keys(results).length > 0}
-                    className="!overflow-visible">
+                    className="!overflow-visible pb-5">
                     <ResultsShowCase
                         className="mx-auto mt-10 w-96"
                         results={results}
